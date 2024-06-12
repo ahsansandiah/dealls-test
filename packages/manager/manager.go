@@ -2,6 +2,8 @@ package manager
 
 import (
 	"context"
+	"fmt"
+	"os"
 
 	jwtAuth "github.com/ahsansandiah/dealls-test/packages/auth/jwt"
 	middlewareAuth "github.com/ahsansandiah/dealls-test/packages/auth/middleware"
@@ -44,6 +46,7 @@ func NewInit() (Manager, error) {
 	lg := logger.NewLog()
 	ctx := context.Background()
 
+	fmt.Println(os.Getenv("APP_ENV"))
 	cfg, err := config.NewConfig()
 	if err != nil {
 		lg.ErrorLog(ctx, err)

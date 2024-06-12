@@ -9,25 +9,23 @@ import (
 type ContextKey string
 
 type Config struct {
-	AppEnv                       string `mapstructure:"APP_ENV"`
-	AppTz                        string `mapstructure:"APP_TZ"`
-	AppCurrency                  string `mapstructure:"APP_CURRENCY"`
-	AppIsDev                     bool
-	DatabaseDriver               string `mapstructure:"DATABASE_DRIVER"`
-	DatabaseDSN                  string `mapstructure:"DATABASE_DNS"`
-	DatabaseMaxOpenConnections   int    `mapstructure:"DATABASE_MAX_OPEN_CONNECTIONS"`
-	DatabaseMaxIdleConnections   int    `mapstructure:"DATABASE_MAX_IDLE_CONNECTIONS"`
-	RedisConnection              string `mapstructure:"REDIS_CONNECTION"`
-	RedisAddress                 string `mapstructure:"REDIS_ADDRESS"`
-	RedisUsername                string `mapstructure:"REDIS_USERNAME"`
-	RedisPassword                string `mapstructure:"REDIS_PASSWORD"`
-	RedisDatabase                int    `mapstructure:"REDIS_DATABASE"`
-	RedisExpiredPaymentHookToken int    `mapstructure:"REDIS_EXPIRED_PAYMENT_HOOK_TOKEN"`
-	JwtSecretKey                 string `mapstructure:"JWT_SECRET_KEY"`
-	JwtAccessTokenDuration       int    `mapstructure:"JWT_ACCESS_TOKEN_DURATION_SECONDS"`
-	JwtAccessTokenVADuration     int    `mapstructure:"JWT_ACCESS_TOKEN_VA_DURATION_SECONDS"`
-	PortHttpServer               string `mapstructure:"PORT_HTTP_SERVER"`
-	ServerHTTPReadTimeout        int    `mapstructure:"SERVER_HTTP_READ_TIMEOUT"`
+	AppEnv                     string `mapstructure:"APP_ENV"`
+	AppTz                      string `mapstructure:"APP_TZ"`
+	AppCurrency                string `mapstructure:"APP_CURRENCY"`
+	AppIsDev                   bool
+	DatabaseDriver             string `mapstructure:"DATABASE_DRIVER"`
+	DatabaseDSN                string `mapstructure:"DATABASE_DNS"`
+	DatabaseMaxOpenConnections int    `mapstructure:"DATABASE_MAX_OPEN_CONNECTIONS"`
+	DatabaseMaxIdleConnections int    `mapstructure:"DATABASE_MAX_IDLE_CONNECTIONS"`
+	RedisConnection            string `mapstructure:"REDIS_CONNECTION"`
+	RedisAddress               string `mapstructure:"REDIS_ADDRESS"`
+	RedisUsername              string `mapstructure:"REDIS_USERNAME"`
+	RedisPassword              string `mapstructure:"REDIS_PASSWORD"`
+	RedisDatabase              int    `mapstructure:"REDIS_DATABASE"`
+	JwtSecretKey               string `mapstructure:"JWT_SECRET_KEY"`
+	JwtAccessTokenDuration     int    `mapstructure:"JWT_ACCESS_TOKEN_DURATION_SECONDS"`
+	PortHttpServer             string `mapstructure:"PORT_HTTP_SERVER"`
+	ServerHTTPReadTimeout      int    `mapstructure:"SERVER_HTTP_READ_TIMEOUT"`
 }
 
 func NewConfig() (*Config, error) {
@@ -37,7 +35,7 @@ func NewConfig() (*Config, error) {
 	}
 
 	viper.AddConfigPath(".")
-	viper.AddConfigPath("package/config")
+	viper.AddConfigPath("packages/config")
 	viper.SetConfigName(env)
 	viper.SetConfigType("env")
 	viper.AutomaticEnv()

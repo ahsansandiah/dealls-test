@@ -7,6 +7,8 @@ import (
 
 	"github.com/ahsansandiah/dealls-test/packages/manager"
 	"github.com/ahsansandiah/dealls-test/packages/server"
+
+	authRoutes "github.com/ahsansandiah/dealls-test/handlers/authentication/delivery"
 )
 
 func run() error {
@@ -27,7 +29,7 @@ func run() error {
 	server.Router.Use(mgr.GetMiddleware().InitLog)
 
 	// start routes
-
+	authRoutes.NewRoutes(server.Router, mgr)
 	// end routes
 
 	server.RegisterRouter(server.Router)

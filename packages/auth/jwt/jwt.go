@@ -25,7 +25,6 @@ func NewJwt(cfg *config.Config) Jwt {
 	opt := new(Options)
 	opt.secretKey = cfg.JwtSecretKey
 	opt.accessTokenDuration = cfg.JwtAccessTokenDuration
-	opt.accessTokenVADuration = cfg.JwtAccessTokenVADuration
 
 	return opt
 }
