@@ -13,4 +13,5 @@ func NewRoutes(r *mux.Router, mgr manager.Manager) {
 
 	authHandler := authHandler.NewAuthHandler(mgr)
 	r.Handle("/sign-up", authHandler.SignUp()).Methods("POST")
+	r.Handle("/login", authHandler.Login()).Methods("POST")
 }

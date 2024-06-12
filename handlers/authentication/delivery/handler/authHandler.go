@@ -37,12 +37,32 @@ func (h *Auth) SignUp() http.Handler {
 			return
 		}
 
-		userProfile, err := h.Usecase.SignUp(ctx, req)
+		_, err := h.Usecase.SignUp(ctx, req)
 		if err != nil {
 			h.Json.ErrorResponse(w, r, http.StatusInternalServerError, err)
 			return
 		}
 
-		h.Json.SuccessResponse(w, r, http.StatusCreated, "success sign up", &userProfile)
+		h.Json.SuccessResponse(w, r, http.StatusCreated, "success sign up", "")
+	})
+}
+
+func (h *Auth) Login() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+
+		var req *authDomainEntity.LoginRequest
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			h.Json.ErrorResponse(w, r, http.StatusBadRequest, err)
+			return
+		}
+
+		results, err := h.Usecase.Login(ctx, req)
+		if err != nil {
+			h.Json.ErrorResponse(w, r, http.StatusInternalServerError, err)
+			return
+		}
+
+		h.Json.SuccessResponse(w, r, http.StatusCreated, "success login", &results)
 	})
 }

@@ -13,7 +13,6 @@ type JwtData struct {
 }
 
 type JwtPayload struct {
-	Token  string `json:"token"`
-	UserID int64  `json:"ui"`
+	UserID int64 `json:"ui"`
 	jwt.StandardClaims
 }

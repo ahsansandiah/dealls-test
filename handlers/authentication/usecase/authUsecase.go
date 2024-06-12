@@ -67,3 +67,37 @@ func (uc *Authentication) SignUp(ctx context.Context, data *authDomainEntity.Sig
 
 	return &userProfileData, nil
 }
+
+func (uc *Authentication) Login(ctx context.Context, data *authDomainEntity.LoginRequest) (*authDomainEntity.LoginResponse, error) {
+	// check user exists
+	user, err := uc.repo.GetUserByUsername(ctx, data.Username)
+	if err != nil {
+		uc.log.ErrorLog(ctx, err)
+		return nil, err
+	}
+
+	// check user password
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data.Password))
+	if err != nil {
+		uc.log.ErrorLog(ctx, err)
+		return nil, nil
+	}
+
+	// generate JWT Token
+	dataJwt := &jwtAuth.JwtData{
+		UserID: user.ID,
+	}
+
+	accessToken, expiredTime, err := uc.jwt.GenerateToken(dataJwt, false)
+	if err != nil {
+		uc.log.ErrorLog(ctx, err)
+		return nil, err
+	}
+
+	results := &authDomainEntity.LoginResponse{
+		AccessToken: accessToken,
+		ExpiredTime: expiredTime,
+	}
+
+	return results, nil
+}

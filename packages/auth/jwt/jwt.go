@@ -31,7 +31,6 @@ func NewJwt(cfg *config.Config) Jwt {
 
 func (o *Options) GenerateToken(data *JwtData, isVA bool) (string, *time.Time, error) {
 	jwtPayload := &JwtPayload{
-		Token:  data.Token,
 		UserID: data.UserID,
 	}
 

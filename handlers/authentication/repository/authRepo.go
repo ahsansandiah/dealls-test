@@ -47,3 +47,24 @@ func (repo *Auth) CreateUserProfile(ctx context.Context, userProfile *authDomain
 
 	return err
 }
+
+func (repo *Auth) GetUserByUsername(ctx context.Context, username string) (*authDomainEntity.User, error) {
+	user := &authDomainEntity.User{}
+	var total int64
+
+	res := repo.DB.Where("username = ?", username).Find(user)
+
+	err := res.Error
+	if err != nil {
+		repo.log.ErrorLog(ctx, err)
+		return nil, err
+	}
+
+	res.Count(&total)
+	if total == 0 {
+		repo.log.ErrorLog(ctx, err)
+		return nil, err
+	}
+
+	return user, nil
+}
