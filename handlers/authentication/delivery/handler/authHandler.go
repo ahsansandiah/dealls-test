@@ -37,12 +37,12 @@ func (h *Auth) SignUp() http.Handler {
 			return
 		}
 
-		err := h.Usecase.SignUp(ctx, req)
+		userProfile, err := h.Usecase.SignUp(ctx, req)
 		if err != nil {
 			h.Json.ErrorResponse(w, r, http.StatusInternalServerError, err)
 			return
 		}
 
-		h.Json.SuccessResponse(w, r, http.StatusCreated, "success sign up", &req)
+		h.Json.SuccessResponse(w, r, http.StatusCreated, "success sign up", &userProfile)
 	})
 }

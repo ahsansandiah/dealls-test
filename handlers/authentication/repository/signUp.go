@@ -28,11 +28,22 @@ func NewAuthRepository(mgr manager.Manager) authDomainInterface.AuthRepository {
 }
 
 func (repo *Auth) CreateUser(ctx context.Context, data *authDomainEntity.User) (*authDomainEntity.User, error) {
-	user := repo.DB.Create(&data)
-	if user.Error != nil {
-		repo.log.ErrorLog(ctx, user.Error)
-		return nil, user.Error
+	user := authDomainEntity.User{}
+	result := repo.DB.Create(&data).Scan(&user)
+	if result.Error != nil {
+		repo.log.ErrorLog(ctx, result.Error)
+		return nil, result.Error
 	}
 
-	return nil, nil
+	return &user, nil
+}
+
+func (repo *Auth) CreateUserProfile(ctx context.Context, userProfile *authDomainEntity.UserProfile) error {
+	err := repo.DB.Create(&userProfile).Error
+	if err != nil {
+		repo.log.ErrorLog(ctx, err)
+		return err
+	}
+
+	return err
 }

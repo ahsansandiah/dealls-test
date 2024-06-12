@@ -12,9 +12,10 @@ type AuthHandler interface {
 }
 
 type AuthUsecase interface {
-	SignUp(ctx context.Context, data *authDomainEntity.SignUpRequest) error
+	SignUp(ctx context.Context, data *authDomainEntity.SignUpRequest) (*authDomainEntity.UserProfile, error)
 }
 
 type AuthRepository interface {
 	CreateUser(ctx context.Context, data *authDomainEntity.User) (*authDomainEntity.User, error)
+	CreateUserProfile(ctx context.Context, data *authDomainEntity.UserProfile) error
 }

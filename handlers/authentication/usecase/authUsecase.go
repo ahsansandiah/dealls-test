@@ -2,21 +2,23 @@ package authenticationUsecase
 
 import (
 	"context"
-	"fmt"
 
 	jwtAuth "github.com/ahsansandiah/dealls-test/packages/auth/jwt"
 	"github.com/ahsansandiah/dealls-test/packages/config"
 	"github.com/ahsansandiah/dealls-test/packages/log"
 	"github.com/ahsansandiah/dealls-test/packages/manager"
+	"golang.org/x/crypto/bcrypt"
 
 	authDomainInterface "github.com/ahsansandiah/dealls-test/handlers/authentication/domain"
 	authDomainEntity "github.com/ahsansandiah/dealls-test/handlers/authentication/domain/entity"
+	authRepository "github.com/ahsansandiah/dealls-test/handlers/authentication/repository"
 )
 
 type Authentication struct {
-	jwt jwtAuth.Jwt
-	log log.Log
-	cfg *config.Config
+	jwt  jwtAuth.Jwt
+	log  log.Log
+	cfg  *config.Config
+	repo authDomainInterface.AuthRepository
 }
 
 func NewAuthUsecase(mgr manager.Manager) authDomainInterface.AuthUsecase {
@@ -24,12 +26,44 @@ func NewAuthUsecase(mgr manager.Manager) authDomainInterface.AuthUsecase {
 	usecase.jwt = mgr.GetJwt()
 	usecase.log = mgr.GetLog()
 	usecase.cfg = mgr.GetConfig()
+	usecase.repo = authRepository.NewAuthRepository(mgr)
 
 	return usecase
 }
 
-func (uc *Authentication) SignUp(ctx context.Context, data *authDomainEntity.SignUpRequest) error {
+func (uc *Authentication) SignUp(ctx context.Context, data *authDomainEntity.SignUpRequest) (*authDomainEntity.UserProfile, error) {
+	password := data.Password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		uc.log.ErrorLog(ctx, err)
+		return nil, err
+	}
 
-	fmt.Println(data)
-	return nil
+	userData := authDomainEntity.User{
+		Username: data.Username,
+		Email:    data.Email,
+		Password: string(hashedPassword),
+	}
+
+	user, err := uc.repo.CreateUser(ctx, &userData)
+	if err != nil {
+		uc.log.ErrorLog(ctx, err)
+		return nil, err
+	}
+
+	userProfileData := authDomainEntity.UserProfile{
+		UserID:    user.ID,
+		FirstName: data.FirstName,
+		LastName:  data.LastName,
+		Gender:    data.Gender,
+		Premium:   false,
+	}
+
+	err = uc.repo.CreateUserProfile(ctx, &userProfileData)
+	if err != nil {
+		uc.log.ErrorLog(ctx, err)
+		return nil, err
+	}
+
+	return &userProfileData, nil
 }
