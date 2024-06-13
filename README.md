@@ -14,7 +14,9 @@ cd dealls-test
 ```
 
 3. Install the dependencies:
+``` 
 go mod tidy
+```
 
 ## Usage
 
