@@ -1,6 +1,7 @@
-*Dealls Test Project*
+# Dealls Test Project
 
-*Description*
+## Description
+
 This project is a sample Go application that demonstrates authentication and tracing features. It is intended as a coding test.
 
 
@@ -15,21 +16,24 @@ cd dealls-test
 3. Install the dependencies:
 go mod tidy
 
-*Usage*
+## Usage
+
 To run the project, use the following command:
 ```
 go run cmd/main.go
 ```
 
 
-*Project Structure*
+## Project Structure
+
 cmd/ - Contains the main application entry point.
 handlers/ - Contains the authentication handlers.
 helpers/ - Contains utility functions for tracing.
 packages/ - Contains additional packages used in the project.
 
 
-*Contributing*
+## Contributing
+
 Contributions are welcome! Please fork the repository and create a pull request with your changes. Make sure to update tests as appropriate.
 
 Fork the project
@@ -39,5 +43,6 @@ Push to the branch (git push origin feature/NewFeature)
 Open a pull request
 
 
-*License*
+## License
+
 This project is licensed under the MIT License - see the LICENSE file for details.
